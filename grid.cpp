@@ -8,10 +8,11 @@
 #include <iomanip>
 
 #include <cmath>
+#include "exactcover.h"
 
-#define COND 2
+#define COND 4
 
-int m_create(std::vector<int> input, int size) {
+Matrix_ExactCover m_create(std::vector<int> input, int size) {
 	int row = pow(size, 6);
 	int col = pow(size, 4)*COND;
 	int m[row][col];
