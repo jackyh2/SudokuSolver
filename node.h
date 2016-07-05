@@ -2,7 +2,7 @@
 #define NODE_H
 
 struct Matrix_ExactCover {
-	Node *head;
+	Node_Contraint *head;
 }
 
 struct Node {
