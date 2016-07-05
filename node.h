@@ -1,9 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-struct Matrix_ExactCover {
-	Node_Contraint *head;
-}
+
 
 struct Node {
 	//Data
@@ -21,15 +19,19 @@ struct Node {
 	void restoreUpDown();
 };
 
-struct Node_Contraint {
-	Node *left;
-	Node *right;
+struct Node_Constraint {
+	Node_Constraint *left;
+	Node_Constraint *right;
 	Node *up;
 	Node *down;
 	int colVal;
 	int size;
 
 	void restoreLeftRight();
+};
+
+struct Matrix_ExactCover {
+	Node_Constraint *head;
 };
 
 #endif

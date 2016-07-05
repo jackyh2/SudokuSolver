@@ -9,3 +9,8 @@ void Node::restoreUpDown() {
 	up->down = this;
 	down->up = this;
 }
+
+void Node_Constraint::restoreLeftRight() {
+	left->right = this;
+	right->left = this;
+}
