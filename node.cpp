@@ -14,3 +14,41 @@ void Node_Constraint::restoreLeftRight() {
 	left->right = this;
 	right->left = this;
 }
+
+Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
+	Node_Constraint *curr = head;
+	while (curr != nullptr) {
+		if (curr->colVal == col) break;
+		curr = curr->right;
+	}
+	return curr;
+}
+
+void Node_Constraint::insertNewNode(Node *newNode) {
+	Node *curr = head;
+	head = newNode;
+	if (curr != nullptr) {
+		newNode->up = curr;
+		newNode->down = curr->down;
+		curr->down = newNode;
+		newNode->down->up = newNode;
+	} else { //first node
+		newNode->up = newNode;
+		newNode->down = newNode;
+	}
+	size++;
+}
+
+void Node::insertNewRowNode(Node *newNode) {
+	Node *curr = right;
+	newNode->left = this;
+	newNode->right = curr;
+	curr->left = newNode;
+	right = newNode;
+	/*if (curr == nullptr) {
+		newNode->right = this;
+		left = newNode;
+	} else {
+		curr-left = newNode;
+	}*/
+}

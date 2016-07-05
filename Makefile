@@ -1,7 +1,7 @@
 all: SudokuSolver
 
 SudokuSolver: main.o node.o grid.o
-	g++ main.o node.o grid .o -o SudokuSolver
+	g++ main.o node.o grid.o -o SudokuSolver
 
 main.o: main.cpp 
 	g++ -std=c++11 -Wall -Werror -c main.cpp

@@ -17,21 +17,26 @@ struct Node {
 	//"Restore" this node back, via Knuth's Dancing Links idea.
 	void restoreLeftRight();
 	void restoreUpDown();
+	void insertNewRowNode(Node *newNode);
 };
 
 struct Node_Constraint {
 	Node_Constraint *left;
 	Node_Constraint *right;
-	Node *up;
-	Node *down;
+	Node *head;
 	int colVal;
 	int size;
 
 	void restoreLeftRight();
+	void insertNewNode(Node *newNode);
+
 };
 
 struct Matrix_ExactCover {
 	Node_Constraint *head;
+
+	//Operations
+	Node_Constraint *get_Column_Constraint(int col);
 };
 
 #endif
