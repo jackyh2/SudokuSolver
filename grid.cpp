@@ -81,7 +81,7 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 			ec_cond[0] = COND0 + it - input.begin(); //position in sudoku 
 			ec_cond[1] = COND1 + s_row*MULT_C + val;
 			ec_cond[2] = COND2 + s_col*MULT_C + val;
-			ec_cond[3] = COND3 + s_block*MULT_C + val;
+			ec_cond[3] = COND3 + (s_block-1)*MULT_C + val;
 			
 
 			for (int j = 0; j < NUM_CONDS; ++j){
