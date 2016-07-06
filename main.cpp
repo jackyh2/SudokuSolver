@@ -11,7 +11,7 @@ int main() {
 		std::cin >> input[i];
 	}
 
-	Matrix_ExactCover *ecm = m_create_header();
+	Matrix_ExactCover *ecm = m_create_grid();
 	m_create_cells(ecm, input);
 
 }

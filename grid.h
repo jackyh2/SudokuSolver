@@ -13,7 +13,8 @@ struct Matrix_ExactCover {
 };
 
 
-Matrix_ExactCover *m_create_header();
-void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input);
+Matrix_ExactCover *m_create_grid();
+void m_create_cells(Matrix_ExactCover *m);
+//void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input);
 
 #endif 
