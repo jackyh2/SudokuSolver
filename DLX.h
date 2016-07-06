@@ -12,6 +12,7 @@ struct SolutionSet {
 
 	void insertNewRow(Node *n);
 	void deletePrevRow();
+	void solve();
 };
 
 
