@@ -1,5 +1,4 @@
 #include <cmath>
-#include <vector>
 #include <iostream>
 #include <algorithm>
 #include <cassert>
@@ -75,8 +74,13 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 	s_block = 0;
 	//Construct the matrix
 	for (auto it = input.begin(); it != input.end(); ++it) {
+		/*DEBUG */
+		int debugInt = *it;
 
 		if ((val = *it)) { //only non-zero values
+			std::cout << "Input: " << debugInt << " At: " << "(" << s_row << "," << s_col << ") creates";
+
+
 			ec_row = val + s_row*MULT_R_ROW + s_col*MULT_R_COL;
 			ec_cond[0] = COND0 + it - input.begin(); //position in sudoku 
 			ec_cond[1] = COND1 + s_row*MULT_C + val;
@@ -103,14 +107,17 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 				//append this node to the column's LL
 				//join the entire row doubly horizontally
 
+				/*DEBUG*/
+				std::cout << "(" << cell->rowVal << "," << cell->colVal << ")" << " ";
+				
 			}
-
-
+			std::cout << std::endl;
 		}
 		s_col = (s_col+1)%9; //update sudoku position
 		s_row += !s_col;
 		s_block = 1 + 3*(s_row/3)+(s_col/3);
 		//++it;
+
 	}
 }
 
