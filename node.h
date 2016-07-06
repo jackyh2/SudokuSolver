@@ -32,13 +32,6 @@ struct Node_Constraint {
 
 };
 
-struct Matrix_ExactCover {
-	Node_Constraint *head;
-
-	//Operations
-	Node_Constraint *get_Column_Constraint(int col);
-};
-
 #endif
 
 

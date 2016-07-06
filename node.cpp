@@ -15,15 +15,6 @@ void Node_Constraint::restoreLeftRight() {
 	right->left = this;
 }
 
-Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
-	Node_Constraint *curr = head;
-	while (curr != nullptr) {
-		if (curr->colVal == col) break;
-		curr = curr->right;
-	}
-	return curr;
-}
-
 void Node_Constraint::insertNewNode(Node *newNode) {
 	Node *curr = head;
 	head = newNode;

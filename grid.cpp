@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "node.h"
+#include "grid.h"
 
 //Standard 9x9 sudoku
 const int NUMCOLS = 324;
@@ -112,4 +112,13 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 		s_block = 1 + 3*(s_row/3)+(s_col/3);
 		//++it;
 	}
+}
+
+Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
+	Node_Constraint *curr = head;
+	while (curr != nullptr) {
+		if (curr->colVal == col) break;
+		curr = curr->right;
+	}
+	return curr;
 }
