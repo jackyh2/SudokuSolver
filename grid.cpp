@@ -77,9 +77,10 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 	for (auto it = input.begin(); it != input.end(); ++it) {
 		/*DEBUG */
 		int debugInt = *it;
-		std::cout << "Input: " << debugInt << " Ones: ";
 
 		if ((val = *it)) { //only non-zero values
+			std::cout << "Input: " << debugInt << " At: " << "(" << s_row << "," << s_col << ") creates";
+
 
 			ec_row = val + s_row*MULT_R_ROW + s_col*MULT_R_COL;
 			ec_cond[0] = COND0 + it - input.begin(); //position in sudoku 
@@ -109,15 +110,15 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 
 				/*DEBUG*/
 				std::cout << "(" << cell->rowVal << "," << cell->colVal << ")" << " ";
+				
 			}
-
-
+			std::cout << std::endl;
 		}
 		s_col = (s_col+1)%9; //update sudoku position
 		s_row += !s_col;
 		s_block = 1 + 3*(s_row/3)+(s_col/3);
 		//++it;
-		std::cout << std::endl;
+
 	}
 }
 
