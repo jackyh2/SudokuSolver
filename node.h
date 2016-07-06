@@ -17,6 +17,8 @@ struct Node {
 	//"Restore" this node back, via Knuth's Dancing Links idea.
 	void restoreLeftRight();
 	void restoreUpDown();
+	void removeLeftRight();
+	void removeUpDown();
 	void insertNewRowNode(Node *newNode);
 };
 
@@ -28,6 +30,7 @@ struct Node_Constraint {
 	int size;
 
 	void restoreLeftRight();
+	void removeLeftRight();
 	void insertNewNode(Node *newNode);
 
 };

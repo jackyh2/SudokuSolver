@@ -15,6 +15,21 @@ void Node_Constraint::restoreLeftRight() {
 	right->left = this;
 }
 
+void Node::removeLeftRight() {
+	left->right = right;
+	right->left = left;
+}
+
+void Node::removeUpDown() {
+	up->down = down;
+	down->up = up;
+}
+
+void Node_Constraint::removeLeftRight() {
+	left->right = right;
+	right->left = left;
+}
+
 void Node_Constraint::insertNewNode(Node *newNode) {
 	Node *curr = head;
 	head = newNode;

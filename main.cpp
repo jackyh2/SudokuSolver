@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "grid.h"
+#include "DLX.h"
 
 int main() {
 	//DO SOMETHING:

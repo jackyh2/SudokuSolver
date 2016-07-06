@@ -1,6 +1,8 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include <vector>
+
 #include "node.h"
 
 struct Matrix_ExactCover {
