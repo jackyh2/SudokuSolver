@@ -25,13 +25,14 @@ const int NUM_CONDS = 4;
 const int MULT_9 = 9;
 
 struct Matrix_ExactCover {
-	Matrix_ExactCover(): head(nullptr), header_constraint(NUMCOLS), nodes(NUMROWS, std::vector<Node *>(NUMCOLS)) {}
+	Matrix_ExactCover(): head(nullptr), header_constraint(NUMCOLS) {}
 	Node_Constraint *head;
 	std::vector<Node_Constraint *> header_constraint;
-	std::vector<std::vector<Node *>> nodes;
+	//std::vector<std::vector<Node *>> nodes;
 	//Operations
 	Node_Constraint *get_Column_Constraint(int col);
 	Node *get_Row_Node(int row, int col);
+	void printRowByRow();
 };
 
 

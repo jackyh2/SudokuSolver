@@ -15,4 +15,5 @@ int main() {
 	s.m = ecm;
 	s.m_cover_inputs(input);
 
+	s.m->printRowByRow();
 }

@@ -95,6 +95,30 @@ Node *Matrix_ExactCover::get_Row_Node(int row, int col) {
 	return cell;
 }
 
+
+void Matrix_ExactCover::printRowByRow() {
+	std::vector<std::vector<Node *>> matrix(NUMROWS);
+	for (int i = 0; i < NUMCOLS; ++i) {
+		Node_Constraint *curr = get_Column_Constraint(i);
+		Node *currNode = curr->head;
+		if (currNode == nullptr) continue;
+		do {
+			int row = currNode->rowVal;
+			matrix[row].push_back(currNode);
+			currNode = currNode->down;
+		} while (currNode != curr->head);
+	}
+
+	for (int i = 0; i < NUMROWS; ++i) {
+		std::cout << "ROW " << i << ": ";
+		for (auto it = matrix[i].begin(); it != matrix[i].end(); ++it) {
+			std::cout << "(" << (*it)->rowVal << "," << (*it)->colVal << ") ";
+		}
+		std::cout << std::endl;
+	}
+
+}
+
 /*
 void getRidOfCompileErrors() {
 	int a;
