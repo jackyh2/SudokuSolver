@@ -10,8 +10,9 @@ int main() {
 	for (int i = 0; i < 81; ++i) {
 		std::cin >> input[i];
 	}
-
+	
 	Matrix_ExactCover *ecm = m_create_grid();
-	m_create_cells(ecm, input);
+	(void) ecm;
+	//m_create_cells(ecm); We already do this in create_grid().
 
 }

@@ -5,10 +5,6 @@
 
 #include "grid.h"
 
-//Standard 9x9 sudoku
-const int NUMCOLS = 324;
-const int NUMROWS = 729;
-const int NUMBOXES = 81;
 
 //Following the rows and columns layout in
 //http://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
@@ -38,26 +34,24 @@ const int NUM_CONDS = 4;
  */
 Matrix_ExactCover *m_create_grid() {
 
-	Node_Constraint *curr, *prev;
-	std::vector<Node_Constraint *> header_constraint (NUMCOLS);
+	Node_Constraint *curr, *prev = nullptr;
+	//std::vector<Node_Constraint *> header_constraint(NUMCOLS);
 	Matrix_ExactCover *m = new Matrix_ExactCover();
 	//First contraint node
-	m->head = new Node_Constraint();
-	prev = m->head;
-	prev->colVal = 0;
-	prev->size = 0;
+	//m->head = new Node_Constraint();
+	//prev = m->head;
+	//m->header_constraint[0] = m->head;
 
 	//All other contraint nodes in doubly LL
-	for (int i = 1; i < NUMCOLS; ++i) {
-		curr = new Node_Constraint();
-		header_constraint[i] = curr; //could this be an array?
-		curr->colVal = i;
-		curr->size = 0;
-		curr->head = nullptr;
+	for (int i = 0; i < NUMCOLS; ++i) {
+		curr = new Node_Constraint(i);
+		m->header_constraint[i] = curr; //could this be an array?
+		if (prev == nullptr) prev = curr;
 		curr->left = prev;
 		prev->right = curr;
 		prev = curr;
 	}
+	m->head = m->header_constraint[0];
 	//Circular LL of contraints
 	curr->right = m->head;
 	m->head->left = curr;
@@ -71,15 +65,43 @@ Matrix_ExactCover *m_create_grid() {
  */
 void m_create_cells(Matrix_ExactCover *m) {
 	Node *curr, *prev; //create columns first
-	Node *prevcol = nullptr;
-	Node *link = nullptr;
-	for (int i = 0; i < NUMCOLS; ++i) {// any way to chuck this all into one loop instead of having this top bit?
+	//Node *prevcol = nullptr; 
+	//(void) prevcol;
+	//Node *link = nullptr;
+
+	for (int i = 0; i < NUMCOLS; ++i) {
+		prev = nullptr;
+		for (int j = 0; j < NUMROWS; ++j) {
+			curr = new Node(j,i);
+			m->nodes[j][i] = curr;
+			if (prev == nullptr) {
+				m->header_constraint[i]->head = curr;
+				prev = curr;
+			}
+			curr->up = prev;
+			prev->down = curr;
+			prev = curr;
+			if (i > 0 && i < NUMCOLS - 1) {
+				m->nodes[j][i]->left = m->nodes[j][i-1];
+				m->nodes[j][i-1]->right = m->nodes[j][i];
+			} else if (i == NUMROWS - 1) { //last row
+				m->nodes[j][i]->left = m->nodes[j][i-1];
+				m->nodes[j][i-1]->right = m->nodes[j][i];
+				m->nodes[j][i]->right = m->nodes[j][0];
+				m->nodes[j][0]->left = m->nodes[j][i];
+			}
+		}
+		curr->down = m->header_constraint[i]->head;
+		m->header_constraint[i]->head->up = curr;
+	}
+
+	/*for (int i = 0; i < NUMCOLS; ++i) {// any way to chuck this all into one loop instead of having this top bit?
 		curr = new Node(); // perhaps a bool flag like in DLX.cpp?
 		curr->colVal = i;
 		curr->rowVal = 0;
-		header_constraint[i]->head = curr;
+		m->header_constraint[i]->head = curr;
 		if (i) {
-			link = header_constraint[i-1]->head;
+			link = m->header_constraint[i-1]->head;
 		}
 		link->right = curr;
 		curr->left = link;
@@ -95,15 +117,15 @@ void m_create_cells(Matrix_ExactCover *m) {
 			link->right = curr; //doubly link with previously created column.
 			link = link->down;
 		}
-		curr->down = header_constraint[i]->head;
-		header_constraint[i]->head->up = curr;
-	}
-	link = header_constraint[0]->head;
-	curr = header_constraint[NUMCOLS-1]->head;
-	for (i = 0; i < NUMCOLS ; ++i) { //final links to loop around
+		curr->down = m->header_constraint[i]->head;
+		m->header_constraint[i]->head->up = curr;
+	}*/
+	/*link = m->header_constraint[0]->head;
+	curr = m->header_constraint[NUMCOLS-1]->head;
+	for (int i = 0; i < NUMCOLS ; ++i) { //final links to loop around
 		curr->right = link;
 		link->left = curr;
-	}
+	}*/
 }
 /*
  *
@@ -174,10 +196,17 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 */
 
 Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
-	Node_Constraint *curr = head;
-	while (curr != nullptr) {
-		if (curr->colVal == col) break;
-		curr = curr->right;
-	}
-	return curr;
+	return header_constraint[col];
+}
+
+void getRidOfCompileErrors() {
+	int a;
+	a = MULT_R_ROW;
+	a = MULT_R_COL;
+	a = MULT_C;
+	a = COND0;
+	a = COND1;
+	a = COND2;
+	a = COND3;
+	a = NUM_CONDS;
 }
