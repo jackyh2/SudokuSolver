@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "node.h"
+#include "DLX.h"
 
 //Standard 9x9 sudoku
 const int NUMCOLS = 324;
@@ -16,11 +17,13 @@ struct Matrix_ExactCover {
 	std::vector<std::vector<Node *>> nodes;
 	//Operations
 	Node_Constraint *get_Column_Constraint(int col);
+	Node *get_Row_Node(int row);
 };
 
 
 Matrix_ExactCover *m_create_grid();
 void m_create_cells(Matrix_ExactCover *m);
+void m_cover_inputs(SolutionSet *s, Matrix_ExactCover *m, const std::vector<int>& input);
 //void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input);
 
 #endif 

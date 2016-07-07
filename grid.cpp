@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "grid.h"
+#include "DLX.h"
 
 
 //Following the rows and columns layout in
@@ -101,6 +102,13 @@ Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 	return header_constraint[col];
 }
 
+Node *Matrix_ExactCover::get_Row_Node(int row) {
+	Node *cell;
+	for (cell = header_constraint[0]->head; cell->rowVal != row; cell = cell->down) {}
+	return cell;
+}
+
+/*
 void getRidOfCompileErrors() {
 	int a;
 	a = MULT_R_ROW;
@@ -112,4 +120,18 @@ void getRidOfCompileErrors() {
 	a = COND3;
 	a = NUM_CONDS;
 	a = NUMBOXES;
+}*/
+
+void m_cover_inputs(SolutionSet *s, Matrix_ExactCover *m, const std::vector<int>& input) {
+	int val, s_row, s_col, ec_row;
+	s_row = 0;
+	s_col = 0;
+	for (auto it = input.begin(); it != input.end(); ++it) {
+		if ((val = *it)) {
+			ec_row = val + s_row*MULT_R_ROW + s_col*MULT_R_COL;
+			insertNewRow(m->get_Row_Node(ec_row));
+		}
+		s_col = (s_col+1)%9; //update sudoku position
+		s_row += !s_col;
+	}
 }
