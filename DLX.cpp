@@ -76,30 +76,6 @@ void SolutionSet::solve() {
 		solve();
 	}
 
-	/*int size = MAXSIZE;
-	Node_Constraint *colCurr, *col_SH;
-	Node *rowTest;
-
-	while (head != nullptr) {
-		colCurr = head->right;
-		col_SH = head->right;
-		do { //check sizes
-			if (colCurr->size < size) {
-				size = colCurr->size;
-				sol_SH = colCurr
-			} 
-		} while (colCurr != head);
-		//we have a column - now pick rows
-		rowTest = col_SH->head->down;
-		if (rowTest = nullptr) {
-			deletePrevRow;
-		}
-		do {
-			insertNewRow(rowTest);
-		} while (rowTest != col_SH->head)
-		
-	}*/
-			
 }
 
 void SolutionSet::m_cover_inputs(const std::vector<int>& input) {
