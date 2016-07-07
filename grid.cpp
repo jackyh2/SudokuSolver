@@ -9,20 +9,7 @@
 
 //Following the rows and columns layout in
 //http://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
-const int MULT_R_ROW = 81;
-const int MULT_R_COL = 9;
-//COND0: only one of value in each of 81 cells
-//COND1: only one of 1-9 in each of 9 rows
-//COND2: only one of 1-9 in each of 9 columns
-//COND3: only one of 1-9 in each of 9 blocks
-const int MULT_C = 9;
-const int COND0 = 0; //the starting column for each condition
-const int COND1 = 80;
-const int COND2 = 161;
-const int COND3 = 242;
-const int NUM_CONDS = 4;
-const int NUMBOXES = 81;
-const int MULT_9 = 9;
+
 /*_______ sudoku block layout
  *|1|2|3|
  *|-----|
@@ -102,9 +89,9 @@ Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 	return header_constraint[col];
 }
 
-Node *Matrix_ExactCover::get_Row_Node(int row) {
+Node *Matrix_ExactCover::get_Row_Node(int row, int col) {
 	Node *cell;
-	for (cell = header_constraint[0]->head; cell->rowVal != row; cell = cell->down) {}
+	for (cell = header_constraint[col]->head; cell->rowVal != row; cell = cell->down) {}
 	return cell;
 }
 
@@ -121,17 +108,3 @@ void getRidOfCompileErrors() {
 	a = NUM_CONDS;
 	a = NUMBOXES;
 }*/
-
-void m_cover_inputs(SolutionSet *s, Matrix_ExactCover *m, const std::vector<int>& input) {
-	int val, s_row, s_col, ec_row;
-	s_row = 0;
-	s_col = 0;
-	for (auto it = input.begin(); it != input.end(); ++it) {
-		if ((val = *it)) {
-			ec_row = val + s_row*MULT_R_ROW + s_col*MULT_R_COL;
-			insertNewRow(m->get_Row_Node(ec_row));
-		}
-		s_col = (s_col+1)%9; //update sudoku position
-		s_row += !s_col;
-	}
-}
