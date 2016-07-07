@@ -3,7 +3,7 @@ all: SudokuSolver
 SudokuSolver: main.o node.o grid.o DLX.o
 	g++ -std=c++11 -Wall -Werror main.o node.o grid.o DLX.o -o SudokuSolver
 
-main.o: main.cpp DLX.h
+main.o: main.cpp DLX.h grid.h
 	g++ -std=c++11 -Wall -Werror -c main.cpp
 	
 node.o: node.cpp node.h DLX.h
