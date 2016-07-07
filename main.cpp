@@ -14,6 +14,7 @@ int main() {
 	Matrix_ExactCover *ecm = m_create_grid();
 	s.m = ecm;
 	s.m_cover_inputs(input);
-
+	s.m_restore_inputs();
 	s.m->printRowByRow();
+
 }

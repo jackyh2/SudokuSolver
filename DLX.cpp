@@ -55,3 +55,9 @@ void SolutionSet::m_cover_inputs(const std::vector<int>& input) {
 		s_row += !s_col;
 	}
 }
+
+void SolutionSet::m_restore_inputs() {
+	while (!(rows.empty())) {
+		deletePrevRow();
+	}
+}
