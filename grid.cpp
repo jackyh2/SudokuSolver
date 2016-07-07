@@ -100,6 +100,7 @@ void Matrix_ExactCover::printRowByRow() {
 	std::vector<std::vector<Node *>> matrix(NUMROWS);
 	Node_Constraint *iter = head;
 	do {
+		if (head == nullptr) break;
 		Node_Constraint *curr = get_Column_Constraint(iter->colVal);
 		Node *currNode = curr->head;
 		if (currNode == nullptr) {
