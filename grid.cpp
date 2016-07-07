@@ -79,7 +79,6 @@ void m_create_cells(Matrix_ExactCover *m) {
 				ec_cond[2] = COND2 + j*MULT_9 + k; //symbol in row
 				ec_cond[3] = COND3 + (s_block - 1)*MULT_9 + k;
 				prev = nullptr;
-				std::cout << "ECM Row " << ec_row << " Symbol " << k << " at " << "(" << i << "," << j << "): ";
 				for (int n = 0; n < NUM_CONDS; ++n) {
 					cell = new Node(ec_row, ec_cond[n]);
 					col_Constraint = m->header_constraint[cell->colVal];
@@ -88,9 +87,7 @@ void m_create_cells(Matrix_ExactCover *m) {
 						prev->insertNewRowNode(cell);
 					}
 					prev = cell;
-					std::cout << "(" << cell->rowVal << "," << cell->colVal << ")" << " ";
 				}
-				std::cout << std::endl;
 			}
 		}
 	}
