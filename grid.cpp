@@ -67,6 +67,7 @@ void m_create_cells(Matrix_ExactCover *m) {
 	Node *cell, *prev = nullptr;
 	int ec_cond[NUM_CONDS];
 	int s_block = 0;
+	int ec_row;
 	Node_Constraint *col_Constraint;
 	for (int i = 0; i < 9; ++i) { //9 rows
 		for (int j = 0; j < 9; ++j) { //9 columns
@@ -107,4 +108,5 @@ void getRidOfCompileErrors() {
 	a = COND2;
 	a = COND3;
 	a = NUM_CONDS;
+	a = NUMBOXES;
 }

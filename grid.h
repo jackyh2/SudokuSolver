@@ -8,7 +8,6 @@
 //Standard 9x9 sudoku
 const int NUMCOLS = 324;
 const int NUMROWS = 729;
-const int NUMBOXES = 81;
 
 struct Matrix_ExactCover {
 	Matrix_ExactCover(): head(nullptr), header_constraint(NUMCOLS), nodes(NUMROWS, std::vector<Node *>(NUMCOLS)) {}
