@@ -4,6 +4,8 @@
 
 
 struct Node {
+	Node(): Node(0, 0) {}
+	Node(int i, int j) : left(this), right(this), up(this), down(this), rowVal(i), colVal(j) {}
 	//Data
 	Node *left;
 	Node *right;
@@ -23,6 +25,8 @@ struct Node {
 };
 
 struct Node_Constraint {
+	Node_Constraint(): Node_Constraint(0) {}
+	Node_Constraint(int i): left(this), right(this), head(nullptr), colVal(i), size(0) {}
 	Node_Constraint *left;
 	Node_Constraint *right;
 	Node *head;
