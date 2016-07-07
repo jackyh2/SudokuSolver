@@ -51,10 +51,4 @@ void Node::insertNewRowNode(Node *newNode) {
 	newNode->right = curr;
 	curr->left = newNode;
 	right = newNode;
-	/*if (curr == nullptr) {
-		newNode->right = this;
-		left = newNode;
-	} else {
-		curr-left = newNode;
-	}*/
 }

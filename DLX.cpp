@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "DLX.h"
 
 
@@ -65,4 +67,28 @@ void SolutionSet::m_restore_inputs() {
 	while (!(rows.empty())) {
 		deletePrevRow();
 	}
+}
+
+void SolutionSet::printSolution() {
+	int Sudoku[9][9];
+	memset(Sudoku, 0, 81*sizeof(int));
+	while (!(rows.empty())) {
+		int row,col,symbol;
+
+		Node *currRow = rows.top();
+		rows.pop();
+
+		symbol = ((currRow->rowVal - 1) % 9) + 1;
+		row = (currRow->rowVal - 1)/ 81;
+		col = ((currRow->rowVal - 1)/ 9) % 9;
+		Sudoku[row][col] = symbol;
+	}
+
+	for (int i = 0; i < 9; ++i) {
+		for (int j = 0; j < 9; ++j) {
+			std::cout << Sudoku[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+
 }

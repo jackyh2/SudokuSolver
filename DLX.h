@@ -15,6 +15,7 @@ struct SolutionSet {
 	void solve();
 	void m_cover_inputs(const std::vector<int>& input);
 	void m_restore_inputs();
+	void printSolution();
 };
 
 
