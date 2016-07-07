@@ -99,8 +99,6 @@ Node *Matrix_ExactCover::get_Row_Node(int row, int col) {
 void Matrix_ExactCover::printRowByRow() {
 	std::vector<std::vector<Node *>> matrix(NUMROWS);
 	Node_Constraint *iter = head;
-
-	//for (int i = 0; i < NUMCOLS; ++i) {
 	do {
 		Node_Constraint *curr = get_Column_Constraint(iter->colVal);
 		Node *currNode = curr->head;
@@ -114,12 +112,10 @@ void Matrix_ExactCover::printRowByRow() {
 			currNode = currNode->down;
 		} while (currNode != curr->head);
 		iter = iter->right;
-		
 	} while (iter != head);
-	//}
 
 	for (int i = 0; i < NUMROWS; ++i) {
-		std::cout << "ROW " << i + 1 << ": ";
+		std::cout << "ROW " << i+1 << ": ";
 		for (auto it = matrix[i].begin(); it != matrix[i].end(); ++it) {
 			std::cout << "(" << (*it)->rowVal << "," << (*it)->colVal << ") ";
 		}
