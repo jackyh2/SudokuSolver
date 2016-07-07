@@ -17,5 +17,6 @@ int main() {
 	//s.m->printRowByRow();
 	//s.m_restore_inputs();
 	//s.m->printRowByRow();
+	s.solve();
 	s.printSolution();
 }	

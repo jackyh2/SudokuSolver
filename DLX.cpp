@@ -27,7 +27,7 @@ void SolutionSet::insertNewRow(Node *n) {
 	}
 }
 
-void SolutionSet::deletePrevRow() {
+Node *SolutionSet::deletePrevRow() {
 	Node *n = rows.top(); 
 	rows.pop();
 	Node *rowCurr, *colCurr, *removeCurr;
@@ -47,10 +47,36 @@ void SolutionSet::deletePrevRow() {
 		if (m->head == nullptr) m->head = currConstraint;
 		if (currConstraint->colVal < m->head->colVal) m->head = currConstraint;
 	}
+	return n;
 }
 
 void SolutionSet::solve() {
-	int size = MAXSIZE;
+
+	if (m->head == nullptr) { //we are done.
+		return;
+	} else {
+		//Pick via S heuristic.
+		int size = m->head->size;
+		Node_Constraint *min = m->head;
+		Node_Constraint *curr = m->head->right;
+		while (curr != m->head) {
+			if (curr->size < size) {
+				size = curr->size;
+				min = curr;
+			}
+			curr = curr->right;
+		}
+		//Pick any row:
+		Node *row = min->head;
+		if (row == nullptr) { //no rows:
+			Node *prev = deletePrevRow();
+			row = prev->down;
+		}
+		insertNewRow(row);
+		solve();
+	}
+
+	/*int size = MAXSIZE;
 	Node_Constraint *colCurr, *col_SH;
 	Node *rowTest;
 
@@ -72,7 +98,7 @@ void SolutionSet::solve() {
 			insertNewRow(rowTest);
 		} while (rowTest != col_SH->head)
 		
-	}
+	}*/
 			
 }
 
