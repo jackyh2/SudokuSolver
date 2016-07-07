@@ -10,10 +10,13 @@ void SolutionSet::insertNewRow(Node *n) {
 		for (colCurr = rowCurr->up; colCurr != rowCurr; colCurr = colCurr->up) {
 			for (removeCurr = colCurr->right; removeCurr != colCurr; removeCurr = removeCurr->right) {
 				removeCurr->removeUpDown();
+				Node_Constraint *tmp = m->get_Column_Constraint(removeCurr->colVal);
+				if (tmp->head == removeCurr) tmp->head = removeCurr->down;
 			}
 		}
 		Node_Constraint *currConstraint = m->get_Column_Constraint(rowCurr->colVal);
 		currConstraint->removeLeftRight();
+		if (m->head == currConstraint) m->head = currConstraint->right;
 	}
 }
 
@@ -31,6 +34,7 @@ void SolutionSet::deletePrevRow() {
 		}
 		Node_Constraint *currConstraint = m->get_Column_Constraint(rowCurr->colVal);
 		currConstraint->restoreLeftRight();
+		if (currConstraint->colVal < m->head->colVal) m->head = currConstraint;
 	}
 }
 
