@@ -104,13 +104,13 @@ void Matrix_ExactCover::printRowByRow() {
 		if (currNode == nullptr) continue;
 		do {
 			int row = currNode->rowVal;
-			matrix[row].push_back(currNode);
+			matrix[row - 1].push_back(currNode);
 			currNode = currNode->down;
 		} while (currNode != curr->head);
 	}
 
 	for (int i = 0; i < NUMROWS; ++i) {
-		std::cout << "ROW " << i << ": ";
+		std::cout << "ROW " << i+1 << ": ";
 		for (auto it = matrix[i].begin(); it != matrix[i].end(); ++it) {
 			std::cout << "(" << (*it)->rowVal << "," << (*it)->colVal << ") ";
 		}
