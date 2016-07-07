@@ -5,6 +5,7 @@
 
 #include "grid.h"
 
+const int MAXSIZE = 9;
 
 struct SolutionSet {
 	std::stack<Node *> rows;

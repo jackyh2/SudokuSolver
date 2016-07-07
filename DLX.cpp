@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <cstring>
 #include "DLX.h"
 
 
@@ -13,6 +13,8 @@ void SolutionSet::insertNewRow(Node *n) {
 			for (removeCurr = colCurr->right; removeCurr != colCurr; removeCurr = removeCurr->right) {
 				removeCurr->removeUpDown();
 				Node_Constraint *tmp = m->get_Column_Constraint(removeCurr->colVal);
+				tmp->size--;
+				//std::cout << tmp->size << std::endl;
 				if (tmp->head == removeCurr) tmp->head = removeCurr->down;
 				if (tmp->head == removeCurr) tmp->head = nullptr;
 			}
@@ -35,6 +37,7 @@ void SolutionSet::deletePrevRow() {
 			for (removeCurr = colCurr->left; removeCurr != colCurr; removeCurr = removeCurr->left) {
 				removeCurr->restoreUpDown();
 				Node_Constraint *tmp = m->get_Column_Constraint(removeCurr->colVal);
+				tmp->size++;
 				if (tmp->head == nullptr) tmp->head = removeCurr;
 			}
 		}
@@ -46,7 +49,30 @@ void SolutionSet::deletePrevRow() {
 }
 
 void SolutionSet::solve() {
-	//Recursive function Algorithm X goes here..
+	int size = MAXSIZE;
+	Node_Constraint *colCurr, *col_SH;
+	Node *rowTest;
+
+	while (head != nullptr) {
+		colCurr = head->right;
+		col_SH = head->right;
+		do { //check sizes
+			if (colCurr->size < size) {
+				size = colCurr->size;
+				sol_SH = colCurr
+			} 
+		} while (colCurr != head);
+		//we have a column - now pick rows
+		rowTest = col_SH->head->down;
+		if (rowTest = nullptr) {
+			deletePrevRow;
+		}
+		do {
+			insertNewRow(rowTest);
+		} while (rowTest != col_SH->head)
+		
+	}
+			
 }
 
 void SolutionSet::m_cover_inputs(const std::vector<int>& input) {
