@@ -102,7 +102,7 @@ void Matrix_ExactCover::printRowByRow() {
 		Node_Constraint *curr = get_Column_Constraint(i);
 		Node *currNode = curr->head;
 		if (currNode == nullptr) continue;
-		do {
+		do { std::cout << i << std::endl;
 			int row = currNode->rowVal;
 			matrix[row - 1].push_back(currNode);
 			currNode = currNode->down;
