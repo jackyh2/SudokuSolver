@@ -1,18 +1,21 @@
 #include <iostream>
 #include <vector>
 
-#include "grid.h"
 #include "DLX.h"
 
 int main() {
 	//DO SOMETHING:
-	std::vector<int> input(81);
-	for (int i = 0; i < 81; ++i) {
+	SolutionSet s;
+	std::vector<int> input(NUMBOXES);
+	for (int i = 0; i < NUMBOXES; ++i) {
 		std::cin >> input[i];
 	}
 	
 	Matrix_ExactCover *ecm = m_create_grid();
-	(void) ecm;
-	//m_create_cells(ecm); We already do this in create_grid().
+	s.m = ecm;
+	s.m_cover_inputs(input);
+	s.m->printRowByRow();
+	s.m_restore_inputs();
+	s.m->printRowByRow();
 
 }

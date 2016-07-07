@@ -4,24 +4,12 @@
 #include <cassert>
 
 #include "grid.h"
+#include "DLX.h"
 
 
 //Following the rows and columns layout in
 //http://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
-const int MULT_R_ROW = 81;
-const int MULT_R_COL = 9;
-//COND0: only one of value in each of 81 cells
-//COND1: only one of 1-9 in each of 9 rows
-//COND2: only one of 1-9 in each of 9 columns
-//COND3: only one of 1-9 in each of 9 blocks
-const int MULT_C = 9;
-const int COND0 = 0; //the starting column for each condition
-const int COND1 = 80;
-const int COND2 = 161;
-const int COND3 = 242;
-const int NUM_CONDS = 4;
-const int NUMBOXES = 81;
-const int MULT_9 = 9;
+
 /*_______ sudoku block layout
  *|1|2|3|
  *|-----|
@@ -79,6 +67,7 @@ void m_create_cells(Matrix_ExactCover *m) {
 				ec_cond[2] = COND2 + j*MULT_9 + k; //symbol in row
 				ec_cond[3] = COND3 + (s_block - 1)*MULT_9 + k;
 				prev = nullptr;
+				std::cout << "ECM Row " << ec_row << " Symbol " << k << " at " << "(" << i << "," << j << "): ";
 				for (int n = 0; n < NUM_CONDS; ++n) {
 					cell = new Node(ec_row, ec_cond[n]);
 					col_Constraint = m->header_constraint[cell->colVal];
@@ -87,7 +76,9 @@ void m_create_cells(Matrix_ExactCover *m) {
 						prev->insertNewRowNode(cell);
 					}
 					prev = cell;
+					std::cout << "(" << cell->rowVal << "," << cell->colVal << ")" << " ";
 				}
+				std::cout << std::endl;
 			}
 		}
 	}
@@ -98,6 +89,43 @@ Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 	return header_constraint[col];
 }
 
+Node *Matrix_ExactCover::get_Row_Node(int row, int col) {
+	Node *cell;
+	for (cell = header_constraint[col]->head; cell->rowVal != row; cell = cell->down) {}
+	return cell;
+}
+
+
+void Matrix_ExactCover::printRowByRow() {
+	std::vector<std::vector<Node *>> matrix(NUMROWS);
+	Node_Constraint *iter = head;
+	do {
+		if (head == nullptr) break;
+		Node_Constraint *curr = get_Column_Constraint(iter->colVal);
+		Node *currNode = curr->head;
+		if (currNode == nullptr) {
+			iter = iter->right;
+			continue;
+		}
+		do {
+			int row = currNode->rowVal;
+			matrix[row - 1].push_back(currNode);
+			currNode = currNode->down;
+		} while (currNode != curr->head);
+		iter = iter->right;
+	} while (iter != head);
+
+	for (int i = 0; i < NUMROWS; ++i) {
+		std::cout << "G: " << (i+1)/9 + 1 << " | R: " << i+1 << "  ";
+		for (auto it = matrix[i].begin(); it != matrix[i].end(); ++it) {
+			std::cout << "(" << (*it)->rowVal << "," << (*it)->colVal << ") ";
+		}
+		std::cout << std::endl;
+	}
+
+}
+
+/*
 void getRidOfCompileErrors() {
 	int a;
 	a = MULT_R_ROW;
@@ -109,4 +137,4 @@ void getRidOfCompileErrors() {
 	a = COND3;
 	a = NUM_CONDS;
 	a = NUMBOXES;
-}
+}*/
