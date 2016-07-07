@@ -20,6 +20,8 @@ const int COND1 = 80;
 const int COND2 = 161;
 const int COND3 = 242;
 const int NUM_CONDS = 4;
+const int NUMBOXES = 81;
+const int MULT_9 = 9;
 /*_______ sudoku block layout
  *|1|2|3|
  *|-----|
@@ -45,6 +47,7 @@ Matrix_ExactCover *m_create_grid() {
 	//All other contraint nodes in doubly LL
 	for (int i = 0; i < NUMCOLS; ++i) {
 		curr = new Node_Constraint(i);
+		curr->head = nullptr;               //added THIS
 		m->header_constraint[i] = curr; //could this be an array?
 		if (prev == nullptr) prev = curr;
 		curr->left = prev;
@@ -63,6 +66,7 @@ Matrix_ExactCover *m_create_grid() {
  * Create four-way doubly linked nodes at every intersection of NUMCOLS columns
  * and NUMROWS rows.
  */
+ /*
 void m_create_cells(Matrix_ExactCover *m) {
 	Node *curr, *prev; //create columns first
 	//Node *prevcol = nullptr; 
@@ -94,7 +98,7 @@ void m_create_cells(Matrix_ExactCover *m) {
 		curr->down = m->header_constraint[i]->head;
 		m->header_constraint[i]->head->up = curr;
 	}
-
+*/
 	/*for (int i = 0; i < NUMCOLS; ++i) {// any way to chuck this all into one loop instead of having this top bit?
 		curr = new Node(); // perhaps a bool flag like in DLX.cpp?
 		curr->colVal = i;
@@ -126,7 +130,7 @@ void m_create_cells(Matrix_ExactCover *m) {
 		curr->right = link;
 		link->left = curr;
 	}*/
-}
+//}
 /*
  *
  * Need to use the conditions calculated below to perform DLX on the input sudoku values.
@@ -194,6 +198,36 @@ void m_create_cells(Matrix_ExactCover *m, const std::vector<int>& input) {
 	}
 }
 */
+void m_create_cells(Matrix_ExactCover *m) {
+	Node *cell, *prev = nullptr;
+	int ec_cond[NUM_CONDS];
+	int s_block = 0;
+	Node_Constraint *col_Constraint;
+	for (int i = 0; i < 9; ++i) { //9 rows
+		for (int j = 0; j < 9; ++j) { //9 columns
+			for (int k = 1; k < 10; ++k) { //9 symbols
+				s_block = 1 + 3*(i/3)+(j/3); //index blocks [1,9]
+				ec_row = i*MULT_R_ROW + j*MULT_R_COL + k;
+				ec_cond[0] = COND0 + i*MULT_9 + j; //position in sudoku [0,80]
+				ec_cond[1] = COND1 + i*MULT_9 + k; //symbol in row
+				ec_cond[2] = COND2 + j*MULT_9 + k; //symbol in row
+				ec_cond[3] = COND3 + (s_block - 1)*MULT_9 + k;
+				for (int n = 0; n < NUM_CONDS; ++n) {
+					cell = new Node();
+					cell->rowVal = ec_row;
+					cell->colVal = ec_cond[n];
+					col_Constraint = m->header_constraint[cell->colVal];
+					col_Constraint->insertNewNode(cell);
+					if (prev != nullptr) {
+						prev->insertNewRowNode(cell);
+					}
+					prev = cell;
+				}
+			}
+		}
+	}
+}
+
 
 Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 	return header_constraint[col];
