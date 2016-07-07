@@ -115,7 +115,7 @@ void Matrix_ExactCover::printRowByRow() {
 	} while (iter != head);
 
 	for (int i = 0; i < NUMROWS; ++i) {
-		std::cout << "ROW " << i+1 << ": ";
+		std::cout << "G: " << (i+1)/9 + 1 << " | R: " << i+1 << "  ";
 		for (auto it = matrix[i].begin(); it != matrix[i].end(); ++it) {
 			std::cout << "(" << (*it)->rowVal << "," << (*it)->colVal << ") ";
 		}
