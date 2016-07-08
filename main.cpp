@@ -18,13 +18,17 @@ int main() {
 	//std::cout << "3" << std::endl;
 	//s.m->printRowByRow();
 	//std::cout << "4" << std::endl;
-	s.m_cover_inputs(input);
+	bool valid = s.m_cover_inputs(input);
 	//std::cout << "5" << std::endl;
 	//s.m->printRowByRow();
 	//std::cout << "6" << std::endl;
 	//s.m_restore_inputs();
 	
-	s.solve();
+	if (valid) {
+		s.solve();
+	} else {
+		std::cout << "No Solution Found." << std::endl;
+	}
 	//std::cout << "7" << std::endl;
 	//s.m->printRowByRow();
 	//std::cout << "8" << std::endl;
