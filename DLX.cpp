@@ -62,7 +62,7 @@ void SolutionSet::solve() {
 		rows = tmp;
 		return;
 	} else {
-		//if (solved == true) return; //optional statement for faster completion
+		if (solved == true) return; //optional statement for faster completion
 
 		//Pick via S heuristic.
 		int size = m->head->size;
@@ -83,10 +83,10 @@ void SolutionSet::solve() {
 
 		Node *row = min->head;
 		do {
-			//if (solved == true) return;
+			if (solved == true) return;
 			insertNewRow(row);
 			solve();
-			//if (solved == true) return;
+			if (solved == true) return;
 			deletePrevRow();
 			row = row->down;
 
