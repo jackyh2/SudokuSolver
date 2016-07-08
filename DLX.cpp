@@ -110,7 +110,6 @@ void SolutionSet::solve() {
 		}
 	}
 
-}
 
 void SolutionSet::m_cover_inputs(const std::vector<int>& input) {
 	int val, s_row, s_col, ec_row;
