@@ -53,10 +53,11 @@ Node *SolutionSet::deletePrevRow() {
 void SolutionSet::solve() {
 //std::cout << std::endl << "entered" << std::endl;
 	if (m->head == nullptr) { //we are done.
-		printSolution();
-		exit(0);
+		solved = true;
 		return;
 	} else {
+		if (solved == true) return; //optional statement for faster completion
+
 		//Pick via S heuristic.
 		int size = m->head->size;
 		Node_Constraint *min = m->head;
@@ -76,10 +77,13 @@ void SolutionSet::solve() {
 
 		Node *row = min->head;
 		do {
+			if (solved == true) return;
 			insertNewRow(row);
 			solve();
+			if (solved == true) return;
 			deletePrevRow();
 			row = row->down;
+
 		} while (row != min->head);
 
 
