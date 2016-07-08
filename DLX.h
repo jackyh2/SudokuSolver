@@ -11,6 +11,7 @@ struct SolutionSet {
 	std::stack<Node *> rows;
 	Matrix_ExactCover *m;
 	bool solved;
+	int solutionNum;
 
 	void insertNewRow(Node *n);
 	Node *deletePrevRow();

@@ -5,7 +5,7 @@
 
 
 void SolutionSet::insertNewRow(Node *n) {
-	rows.push(n); std::cout << "pushed" << n->rowVal << std::endl; //m->printRowByRow();
+	rows.push(n); //std::cout << "pushed" << n->rowVal << std::endl; //m->printRowByRow();
 	Node *rowCurr, *colCurr, *removeCurr;
 	bool flag = true;
 	for (rowCurr = n; rowCurr != n || flag; rowCurr = rowCurr->right) {
@@ -28,7 +28,7 @@ void SolutionSet::insertNewRow(Node *n) {
 }
 
 Node *SolutionSet::deletePrevRow() {
-	Node *n = rows.top(); std::cout << "popped" << n->rowVal << std::endl;
+	Node *n = rows.top(); //std::cout << "popped" << n->rowVal << std::endl;
 	rows.pop();
 	Node *rowCurr, *colCurr, *removeCurr;
 	bool flag = true;
@@ -52,11 +52,17 @@ Node *SolutionSet::deletePrevRow() {
 
 void SolutionSet::solve() {
 //std::cout << std::endl << "entered" << std::endl;
+	//std::cout << rows.size() << std::endl;
 	if (m->head == nullptr) { //we are done.
 		solved = true;
+		std::stack<Node *> tmp = rows;
+		std::cout << "Solution number " << ++solutionNum << std::endl << std::endl;
+		printSolution();
+		std::cout << std::endl;
+		rows = tmp;
 		return;
 	} else {
-		if (solved == true) return; //optional statement for faster completion
+		//if (solved == true) return; //optional statement for faster completion
 
 		//Pick via S heuristic.
 		int size = m->head->size;
@@ -77,10 +83,10 @@ void SolutionSet::solve() {
 
 		Node *row = min->head;
 		do {
-			if (solved == true) return;
+			//if (solved == true) return;
 			insertNewRow(row);
 			solve();
-			if (solved == true) return;
+			//if (solved == true) return;
 			deletePrevRow();
 			row = row->down;
 
