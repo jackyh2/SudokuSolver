@@ -51,7 +51,7 @@ Node *SolutionSet::deletePrevRow() {
 }
 
 void SolutionSet::solve() {
-
+std::cout << std::endl << "entered" << std::endl;
 	if (m->head == nullptr) { //we are done.
 		return;
 	} else {
