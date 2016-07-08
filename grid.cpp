@@ -91,8 +91,16 @@ Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 
 Node *Matrix_ExactCover::get_Row_Node(int row, int col) {
 	Node *cell;
-	for (cell = header_constraint[col]->head; cell->rowVal != row; cell = cell->down) {}
-	return cell;
+	bool flag = true;
+	for (cell = header_constraint[col]->head; cell->rowVal != row 
+											&& (cell != header_constraint[col]->head || flag); cell = cell->down) {
+		flag = false;
+	}
+	if (cell->rowVal == row){
+		return cell;
+	} else {
+		return nullptr;
+	}
 }
 
 
