@@ -50,11 +50,9 @@ Node *SolutionSet::deletePrevRow() {
 	return n;
 }
 
-
 void SolutionSet::solve() {
 
 	if (m->head == nullptr) { //we are done.
-		printSolution();
 		return;
 	} else {
 		//Pick via S heuristic.
@@ -68,37 +66,14 @@ void SolutionSet::solve() {
 			}
 			curr = curr->right;
 		}
-
-		Node *row = min->head;
-		if (row == nullptr) { //no rows:
-			Node *prev = deletePrevRow();
-			row = prev->down;
-			insertNewRow(row);
-			solve();
-			deletePrevRow();
-		} else {
-			bool flag = true;
-			//Node *row;
-			for (row = min->head; row != min->head || flag; row = row->down) {
-				flag = false;
-				insertNewRow(row);
-				solve();
-				deletePrevRow();
-			}
-		}
-
-		
-
-		/*//Pick any row:
+		//Pick any row:
 		Node *row = min->head;
 		if (row == nullptr) { //no rows:
 			Node *prev = deletePrevRow();
 			row = prev->down;
 		}
-
 		insertNewRow(row);
 		solve();
-		deletePrevRow();*/
 	}
 
 }
