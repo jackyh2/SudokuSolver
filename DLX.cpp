@@ -54,6 +54,7 @@ void SolutionSet::solve() {
 //std::cout << std::endl << "entered" << std::endl;
 	if (m->head == nullptr) { //we are done.
 		printSolution();
+		exit(0);
 		return;
 	} else {
 		//Pick via S heuristic.
