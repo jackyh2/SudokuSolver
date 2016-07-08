@@ -82,34 +82,9 @@ void SolutionSet::solve() {
 			row = row->down;
 		} while (row != min->head);
 
-		//Pick any row:
-		Node *row = min->head;
-
-		if (row == nullptr) { //no rows:
-			Node *prev = deletePrevRow(); //std::cout << std::endl << "restored" << std::endl;
-			row = prev->down;
-			//min->head = prev->down;
-		}
-
-		insertNewRow(row);
-		solve();
 
 	}
-
-	
-		Node *row = min->head;
-		Node *firsttry = row;
-		Node *prev;
-		while (row != firsttry) { //(row != nullptr)||
-			if (row == nullptr) {
-				prev = deletePrevRow(); //std::cout << std::endl << "restored" << std::endl;
-				row = prev->down;
-			}
-			insertNewRow(row);
-			solve();
-		}
-	}
-
+}
 
 void SolutionSet::m_cover_inputs(const std::vector<int>& input) {
 	int val, s_row, s_col, ec_row;
