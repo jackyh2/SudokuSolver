@@ -6,6 +6,7 @@
 int main() {
 	//DO SOMETHING:
 	SolutionSet s;
+	s.solved = false;
 	std::vector<int> input(NUMBOXES);
 	for (int i = 0; i < NUMBOXES; ++i) {
 		std::cin >> input[i];

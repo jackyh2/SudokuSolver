@@ -10,6 +10,7 @@ const int MAXSIZE = 9;
 struct SolutionSet {
 	std::stack<Node *> rows;
 	Matrix_ExactCover *m;
+	bool solved;
 
 	void insertNewRow(Node *n);
 	Node *deletePrevRow();

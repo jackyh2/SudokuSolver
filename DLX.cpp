@@ -5,7 +5,7 @@
 
 
 void SolutionSet::insertNewRow(Node *n) {
-	rows.push(n);
+	rows.push(n); std::cout << "pushed" << n->rowVal << std::endl; //m->printRowByRow();
 	Node *rowCurr, *colCurr, *removeCurr;
 	bool flag = true;
 	for (rowCurr = n; rowCurr != n || flag; rowCurr = rowCurr->right) {
@@ -28,7 +28,7 @@ void SolutionSet::insertNewRow(Node *n) {
 }
 
 Node *SolutionSet::deletePrevRow() {
-	Node *n = rows.top(); 
+	Node *n = rows.top(); std::cout << "popped" << n->rowVal << std::endl;
 	rows.pop();
 	Node *rowCurr, *colCurr, *removeCurr;
 	bool flag = true;
@@ -51,10 +51,13 @@ Node *SolutionSet::deletePrevRow() {
 }
 
 void SolutionSet::solve() {
-std::cout << std::endl << "entered" << std::endl;
+//std::cout << std::endl << "entered" << std::endl;
 	if (m->head == nullptr) { //we are done.
+		solved = true;
 		return;
 	} else {
+		if (solved == true) return; //optional statement for faster completion
+
 		//Pick via S heuristic.
 		int size = m->head->size;
 		Node_Constraint *min = m->head;
@@ -66,16 +69,25 @@ std::cout << std::endl << "entered" << std::endl;
 			}
 			curr = curr->right;
 		}
-		//Pick any row:
-		Node *row = min->head;
-		if (row == nullptr) { //no rows:
-			Node *prev = deletePrevRow();
-			row = prev->down;
-		}
-		insertNewRow(row);
-		solve();
-	}
 
+
+		if (min->head == nullptr) {
+			return;
+		} 
+
+		Node *row = min->head;
+		do {
+			if (solved == true) return;
+			insertNewRow(row);
+			solve();
+			if (solved == true) return;
+			deletePrevRow();
+			row = row->down;
+
+		} while (row != min->head);
+
+
+	}
 }
 
 void SolutionSet::m_cover_inputs(const std::vector<int>& input) {
