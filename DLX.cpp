@@ -5,7 +5,7 @@
 
 
 void SolutionSet::insertNewRow(Node *n) {
-	rows.push(n);
+	rows.push(n); std::cout << "pushed" << n->rowVal << std::endl; //m->printRowByRow();
 	Node *rowCurr, *colCurr, *removeCurr;
 	bool flag = true;
 	for (rowCurr = n; rowCurr != n || flag; rowCurr = rowCurr->right) {
@@ -28,7 +28,7 @@ void SolutionSet::insertNewRow(Node *n) {
 }
 
 Node *SolutionSet::deletePrevRow() {
-	Node *n = rows.top(); 
+	Node *n = rows.top(); std::cout << "popped" << n->rowVal << std::endl;
 	rows.pop();
 	Node *rowCurr, *colCurr, *removeCurr;
 	bool flag = true;
@@ -51,7 +51,7 @@ Node *SolutionSet::deletePrevRow() {
 }
 
 void SolutionSet::solve() {
-std::cout << std::endl << "entered" << std::endl;
+
 	if (m->head == nullptr) { //we are done.
 		return;
 	} else {
@@ -67,13 +67,28 @@ std::cout << std::endl << "entered" << std::endl;
 			curr = curr->right;
 		}
 		//Pick any row:
-		Node *row = min->head;
+/*		Node *row = min->head;
 		if (row == nullptr) { //no rows:
-			Node *prev = deletePrevRow();
+			Node *prev = deletePrevRow(); //std::cout << std::endl << "restored" << std::endl;
 			row = prev->down;
+			//min->head = prev->down;
 		}
-		insertNewRow(row);
+			insertNewRow(row);
 		solve();
+	}
+*/		
+	
+		Node *row = min->head;
+		Node *firsttry = row;
+		Node *prev;
+		while (row != firsttry) { //(row != nullptr)||
+			if (row == nullptr) {
+				prev = deletePrevRow(); //std::cout << std::endl << "restored" << std::endl;
+				row = prev->down;
+			}
+			insertNewRow(row);
+			solve();
+		}
 	}
 
 }
