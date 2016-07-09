@@ -30,6 +30,7 @@ void Node_Constraint::removeLeftRight() {
 	right->left = left;
 }
 
+//Insert new node to the column
 void Node_Constraint::insertNewNode(Node *newNode) {
 	Node *curr = head;
 	head = newNode;
@@ -45,7 +46,8 @@ void Node_Constraint::insertNewNode(Node *newNode) {
 	size++;
 }
 
-void Node::insertNewRowNode(Node *newNode) {
+//Create links to join a new node to an existing row of node(s) horizontally
+void Node::linkWithRow(Node *newNode) {
 	Node *curr = right;
 	newNode->left = this;
 	newNode->right = curr;

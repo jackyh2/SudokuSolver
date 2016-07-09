@@ -8,13 +8,15 @@
 const int MAXSIZE = 9;
 
 struct SolutionSet {
-	std::stack<Node *> rows;
+	std::stack<Node *> solRows;
 	Matrix_ExactCover *m;
 	bool solved;
 	int solutionNum;
 
+	//Operations
+
 	void insertNewRow(Node *n);
-	Node *deletePrevRow();
+	Node *restorePrevRow();
 	void solve();
 	bool m_cover_inputs(const std::vector<int>& input);
 	void m_restore_inputs();

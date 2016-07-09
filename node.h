@@ -1,8 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
 
-
-
 struct Node {
 	Node(): Node(0, 0) {}
 	Node(int i, int j) : left(this), right(this), up(this), down(this), rowVal(i), colVal(j) {}
@@ -16,12 +14,13 @@ struct Node {
 
 	//Operations:
 
+	void linkWithRow(Node *newNode);
 	//"Restore" this node back, via Knuth's Dancing Links idea.
 	void restoreLeftRight();
 	void restoreUpDown();
 	void removeLeftRight();
 	void removeUpDown();
-	void insertNewRowNode(Node *newNode);
+	
 };
 
 struct Node_Constraint {
@@ -32,6 +31,8 @@ struct Node_Constraint {
 	Node *head;
 	int colVal;
 	int size;
+
+	//Operations
 
 	void restoreLeftRight();
 	void removeLeftRight();

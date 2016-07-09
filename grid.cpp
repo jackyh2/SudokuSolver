@@ -23,20 +23,13 @@
  * Create the constraints header, then continues to m_create_cells
  */
 Matrix_ExactCover *m_create_grid() {
-
 	Node_Constraint *curr, *prev = nullptr;
-	//std::vector<Node_Constraint *> header_constraint(NUMCOLS);
 	Matrix_ExactCover *m = new Matrix_ExactCover();
-	//First contraint node
-	//m->head = new Node_Constraint();
-	//prev = m->head;
-	//m->header_constraint[0] = m->head;
 
-	//All other contraint nodes in doubly LL
 	for (int i = 0; i < NUMCOLS; ++i) {
 		curr = new Node_Constraint(i);
 		curr->head = nullptr;               //added THIS
-		m->header_constraint[i] = curr; //could this be an array?
+		m->header_constraint[i] = curr;
 		if (prev == nullptr) prev = curr;
 		curr->left = prev;
 		prev->right = curr;
@@ -46,11 +39,14 @@ Matrix_ExactCover *m_create_grid() {
 	//Circular LL of contraints
 	curr->right = m->head;
 	m->head->left = curr;
+
 	m_create_cells(m);
 	return m;
 }
 
-
+/*
+ *Create the ECM, with cells determined by the 4 conditions
+ */
 void m_create_cells(Matrix_ExactCover *m) {
 	Node *cell, *prev = nullptr;
 	int ec_cond[NUM_CONDS];
@@ -67,55 +63,59 @@ void m_create_cells(Matrix_ExactCover *m) {
 				ec_cond[2] = COND2 + j*MULT_9 + k; //symbol in row
 				ec_cond[3] = COND3 + (s_block - 1)*MULT_9 + k;
 				prev = nullptr;
-				//std::cout << "ECM Row " << ec_row << " Symbol " << k << " at " << "(" << i << "," << j << "): ";
 				for (int n = 0; n < NUM_CONDS; ++n) {
 					cell = new Node(ec_row, ec_cond[n]);
 					col_Constraint = m->header_constraint[cell->colVal];
 					col_Constraint->insertNewNode(cell);
-					if (prev != nullptr) {
-						prev->insertNewRowNode(cell);
+					if (prev != nullptr) { //wait till one node already exists in row
+						prev->linkWithRow(cell);
 					}
 					prev = cell;
-					//std::cout << "(" << cell->rowVal << "," << cell->colVal << ")" << " ";
 				}
-				//std::cout << std::endl;
 			}
 		}
 	}
 }
 
-
+/*
+ *Return pointer to a specified contraint node
+ */
 Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 	return header_constraint[col];
 }
 
-Node *Matrix_ExactCover::get_Row_Node(int row, int col) {
-	Node *cell;
-	bool flag = true;
-	for (cell = header_constraint[col]->head; cell != header_constraint[col]->head || flag; cell = cell->down) {
-		flag = false;
+/*
+ *Return the pointer to the specified node
+ */
+Node *Matrix_ExactCover::get_Node(int row, int col) {
+	Node *cell = header_constraint[col]->head;
+	do {
 		if (cell->rowVal == row) return cell;
-	}
+		cell = cell->down;
+	} while (cell != header_constraint[col]->head);
 	return nullptr;
 }
 
-
+/*
+ *Print to stdout the ECM a row at a time.
+ */
 void Matrix_ExactCover::printRowByRow() {
 	std::vector<std::vector<Node *>> matrix(NUMROWS);
-	Node_Constraint *iter = head;
+	Node_Constraint *iter = head, *currCol;
+	Node *currNode;
 	do {
-		if (head == nullptr) break;
-		Node_Constraint *curr = get_Column_Constraint(iter->colVal);
-		Node *currNode = curr->head;
-		if (currNode == nullptr) {
+		if (head == nullptr) break;//empty ECM
+		currCol = get_Column_Constraint(iter->colVal);//for each column
+		currNode = currCol->head; 
+		if (currNode == nullptr) {//empty column
 			iter = iter->right;
 			continue;
 		}
-		do {
+		do { //for each node in a column
 			int row = currNode->rowVal;
-			matrix[row - 1].push_back(currNode);
+			matrix[row - 1].push_back(currNode);//push to appropriate row vector (row [1,729])
 			currNode = currNode->down;
-		} while (currNode != curr->head);
+		} while (currNode != currCol->head);
 		iter = iter->right;
 	} while (iter != head);
 
@@ -128,17 +128,3 @@ void Matrix_ExactCover::printRowByRow() {
 	}
 
 }
-
-/*
-void getRidOfCompileErrors() {
-	int a;
-	a = MULT_R_ROW;
-	a = MULT_R_COL;
-	a = MULT_C;
-	a = COND0;
-	a = COND1;
-	a = COND2;
-	a = COND3;
-	a = NUM_CONDS;
-	a = NUMBOXES;
-}*/
