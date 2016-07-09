@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "node.h"
-//#include "DLX.h"
+
 
 //Standard 9x9 sudoku
 const int NUMCOLS = 324; //columns indexed [0,323]
@@ -24,6 +24,8 @@ const int COND3 = 242;
 const int NUM_CONDS = 4;
 const int MULT_9 = 9; //multipler constant
 
+
+//Representation of the Exact Cover matrix.
 struct Matrix_ExactCover {
 	Matrix_ExactCover(): head(nullptr), header_constraint(NUMCOLS) {}//contructor default
 	Node_Constraint *head;
@@ -37,6 +39,6 @@ struct Matrix_ExactCover {
 
 
 Matrix_ExactCover *m_create_grid();
-void m_create_cells(Matrix_ExactCover *m);
+
 
 #endif 

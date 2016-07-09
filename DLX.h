@@ -8,6 +8,10 @@
 const int MAXSIZE = 9;
 
 struct SolutionSet {
+	SolutionSet(): solved(false), solutionNum(0) { 
+		m = m_create_grid(); 
+	}
+	
 	std::stack<Node *> solRows;
 	Matrix_ExactCover *m;
 	bool solved;

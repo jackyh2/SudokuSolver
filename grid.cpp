@@ -4,9 +4,9 @@
 #include <cassert>
 
 #include "grid.h"
-#include "DLX.h"
 
 
+static void m_create_cells(Matrix_ExactCover *m);
 //Following the rows and columns layout in
 //http://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
 
@@ -28,7 +28,6 @@ Matrix_ExactCover *m_create_grid() {
 
 	for (int i = 0; i < NUMCOLS; ++i) {
 		curr = new Node_Constraint(i);
-		curr->head = nullptr;               //added THIS
 		m->header_constraint[i] = curr;
 		if (prev == nullptr) prev = curr;
 		curr->left = prev;
@@ -47,7 +46,7 @@ Matrix_ExactCover *m_create_grid() {
 /*
  *Create the ECM, with cells determined by the 4 conditions
  */
-void m_create_cells(Matrix_ExactCover *m) {
+static void m_create_cells(Matrix_ExactCover *m) {
 	Node *cell, *prev = nullptr;
 	int ec_cond[NUM_CONDS];
 	int s_block = 0;
