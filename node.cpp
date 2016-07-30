@@ -52,11 +52,14 @@ void Node::setLeft(Node *n) { left = n; }
 void Node::setRight(Node *n) { right = n; }
 void Node::setUp(Node *n) { up = n; }
 void Node::setDown(Node *n) { down = n; }
-
+void Node::setRow(int r) { rowVal = r; }
+void Node::setCol(int c) { colVal = c; }
 	
 void Node_Constraint::setLeft(Node_Constraint *n) { left = n; }
 void Node_Constraint::setRight(Node_Constraint *n) { right = n; }
 void Node_Constraint::setHead(Node *n) { head = n; }
+void Node_Constraint::setCol(int c) { colVal = c; }
+void Node_Constraint::setSize(int s) { size = s; }
 void Node_Constraint::updateSize(int i) { size += i; }
 
 //Insert new node to the column

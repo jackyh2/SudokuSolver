@@ -16,10 +16,6 @@ private:
 	int solutionNum;
 
 public:
-	~SolutionSet() {
-		m_restore_inputs();
-		delete m;
-	}
 	//Operations
 	SolutionSet(): m(new Matrix_ExactCover()), solved(false), solutionNum(0)  {}
 	void insertNewRow(Node *n);
@@ -28,6 +24,19 @@ public:
 	bool m_cover_inputs(const std::vector<int>& input);
 	void m_restore_inputs();
 	void printSolution();
+
+	//Getters
+	std::stack<Node *> getSolRows();
+	Matrix_ExactCover *getECM();
+	bool getSolved();
+	int getSolnNum();
+
+	void setStack(std::stack<Node *> s);
+	void pushStack(Node *n);
+	Node *popStack();
+	void setSolved(bool b);
+	void setSolnNum(int n);
+	void setECM(Matrix_ExactCover *m);
 
 };
 
