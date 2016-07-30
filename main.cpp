@@ -12,13 +12,15 @@ int main() {
 		std::cin >> input[i];
 	}
 	
-	SolutionSet s;
+	SolutionSet *s = new SolutionSet();
 	//If this function returns false, then the input grid is invalid.
-	if (s.m_cover_inputs(input)) {
-		s.solve();
+	if (s->m_cover_inputs(input)) {
+		s->solve();
 	} else {
 		std::cout << "No Solution Found." << std::endl;
 	}
+	delete s;
+
 	//Node *n = new Node();
 	//n->getLeft();
 }	

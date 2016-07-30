@@ -5,7 +5,6 @@
 
 #include "node.h"
 
-
 //Standard 9x9 sudoku
 const int NUMCOLS = 324; //columns indexed [0,323]
 const int NUMROWS = 729; //rows indexed [1,729]
@@ -35,7 +34,11 @@ private:
 	void m_create_cells();
 public:
 	//Operations
-	
+	~Matrix_ExactCover() {
+		for (int i = 0; i < header_constraint.size(); ++i) {
+			delete header_constraint[i];
+		}
+	}
 	void printRowByRow();
 
 	//Getters

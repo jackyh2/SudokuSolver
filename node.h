@@ -16,6 +16,12 @@ private:
 	Node(int i, int j) : left(this), right(this), up(this), down(this), rowVal(i), colVal(j) {}
 
 public:
+	~Node() {
+		left = nullptr;
+		right = nullptr;
+		up = nullptr;
+		down = nullptr;
+	}
 	//Operations:
 	
 	void linkWithRow(Node *newNode);
@@ -38,8 +44,6 @@ public:
 	void setRight(Node *n);
 	void setUp(Node *n);
 	void setDown(Node *n);
-	void setRow(int r);
-	void setCol(int c);
 	
 };
 
@@ -56,6 +60,18 @@ private:
 	Node_Constraint(int i): left(this), right(this), head(nullptr), colVal(i), size(0) {}
 
 public:
+	~Node_Constraint() {
+		Node *curr = head;
+		if (curr == nullptr) return;
+		curr->getUp()->setDown(nullptr);
+		Node *next = curr->getDown();
+		while (curr != nullptr) {
+			delete curr;
+			curr = next;
+			if (next != nullptr) next = next->getDown();
+		}
+
+	}
 	//Operations
 	
 	void restoreLeftRight();
@@ -73,8 +89,6 @@ public:
 	void setLeft(Node_Constraint *n);
 	void setRight(Node_Constraint *n);
 	void setHead(Node *n);
-	void setCol(int c);
-	void setSize(int s);
 	//Size += i;
 	void updateSize(int i);
 
