@@ -1,3 +1,0 @@
-/Users/jacky/Documents/github/SudokuSolver/CMakeFiles/edit_cache.dir
-/Users/jacky/Documents/github/SudokuSolver/CMakeFiles/rebuild_cache.dir
-/Users/jacky/Documents/github/SudokuSolver/CMakeFiles/SudokuSolver.dir
