@@ -3,22 +3,6 @@
 
 #include "DLX.h"
 
-std::stack<Node *> SolutionSet::getSolRows() { return solRows; }
-Matrix_ExactCover* SolutionSet::getECM() { return m; }
-bool SolutionSet::getSolved() { return solved; }
-int SolutionSet::getSolnNum() { return solutionNum; }
-
-void SolutionSet::setStack(std::stack<Node *> s) { solRows = s; }
-void SolutionSet::pushStack(Node *n) { solRows.push(n); }
-Node* SolutionSet::popStack() { 
-	Node *tmp = solRows.top();
-	solRows.pop();
-	return tmp;
-}
-void SolutionSet::setSolved(bool b) { solved = b; }
-void SolutionSet::setSolnNum(int n) { solutionNum = n; }
-void SolutionSet::setECM(Matrix_ExactCover *ecm){ m = ecm; }
-
 /*
  *Add a chosen ec_row to the solution set.
  *As per Algo X, all other rows that satisfy contraints satisfied by the chosen row are covered
@@ -127,7 +111,7 @@ void SolutionSet::solve() {
 
 /*
  *Cover rows and columns in accordance to Algo X for the given inputs
- *Inputs of sudoku are taken left to right, top to bottom. '0' input indicates empty cell
+ *Inputs of sudoku are taken left to right, top to bottom-> '0' input indicates empty cell
  *Will return false for invalid grids, i.e. those that do not satisfy all four sudoku conditions
  *
  *Note
