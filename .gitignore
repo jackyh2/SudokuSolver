@@ -1,3 +1,7 @@
 *.o
 SudokuSolver
 input
+CMakeCache.txt
+CmakeFiles
+Makefile
+cmake_install.cmake
