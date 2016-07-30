@@ -17,9 +17,7 @@ private:
 
 public:
 	//Operations
-	SolutionSet(): solved(false), solutionNum(0) { 
-		m = m_create_grid(); 
-	}
+	SolutionSet(): m(new Matrix_ExactCover()), solved(false), solutionNum(0)  {}
 	void insertNewRow(Node *n);
 	Node *restorePrevRow();
 	void solve();
@@ -34,7 +32,7 @@ public:
 	int getSolnNum();
 
 	void setStack(std::stack<Node *> s);
-	void pushStack(Node *);
+	void pushStack(Node *n);
 	Node *popStack();
 	void setSolved(bool b);
 	void setSolnNum(int n);

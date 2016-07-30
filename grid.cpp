@@ -6,8 +6,6 @@
 #include "grid.h"
 
 
-static void m_create_cells(Matrix_ExactCover *m);
-
 Node_Constraint* Matrix_ExactCover::getHead() { return head; }
 void Matrix_ExactCover::set_Column_Constraint(int col, Node_Constraint * n) { header_constraint[col] = n; }
 void Matrix_ExactCover::setHead(Node_Constraint *n) { head = n; }
@@ -34,39 +32,34 @@ Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
 /*
  * Create the constraints header, then continues to m_create_cells
  */
-Matrix_ExactCover *m_create_grid() {
+
+
+Matrix_ExactCover::Matrix_ExactCover() {
+	head = nullptr;
+	header_constraint.resize(NUMCOLS);
+
 	Node_Constraint *curr, *prev = nullptr;
-	Matrix_ExactCover *m = new Matrix_ExactCover();
 
 	for (int i = 0; i < NUMCOLS; ++i) {
 		curr = new Node_Constraint(i);
-		m->set_Column_Constraint(i, curr);
+		set_Column_Constraint(i, curr);
 		if (prev == nullptr) prev = curr;
 		curr->setLeft(prev);
 		prev->setRight(curr);
 		prev = curr;
-
-		/*curr->left = prev;
-		prev->right = curr;
-		prev = curr;*/
 	}
-	m->setHead(m->get_Column_Constraint(0));
-	/*m->head = m->header_constraint[0];*/
+	setHead(get_Column_Constraint(0));
 	//Circular LL of contraints
-	curr->setRight(m->getHead());
-	m->getHead()->setLeft(curr);
+	curr->setRight(getHead());
+	getHead()->setLeft(curr);
 
-	/*curr->right = m->head;
-	m->head->left = curr;*/
-
-	m_create_cells(m);
-	return m;
+	m_create_cells();
 }
 
 /*
  *Create the ECM, with cells determined by the 4 conditions
  */
-static void m_create_cells(Matrix_ExactCover *m) {
+void Matrix_ExactCover::m_create_cells() {
 	Node *cell, *prev = nullptr;
 	int ec_cond[NUM_CONDS];
 	int s_block = 0;
@@ -84,7 +77,7 @@ static void m_create_cells(Matrix_ExactCover *m) {
 				prev = nullptr;
 				for (int n = 0; n < NUM_CONDS; ++n) {
 					cell = new Node(ec_row, ec_cond[n]);
-					col_Constraint = m->get_Column_Constraint(cell->getCol());
+					col_Constraint = get_Column_Constraint(cell->getCol());
 					col_Constraint->insertNewNode(cell);
 					if (prev != nullptr) { //wait till one node already exists in row
 						prev->linkWithRow(cell);
@@ -111,6 +104,8 @@ Node *Matrix_ExactCover::get_Node(int row, int col) {
 	return nullptr;
 }
 
+
+//DEBUG CODE
 /*
  *Print to stdout the ECM a row at a time.
  */

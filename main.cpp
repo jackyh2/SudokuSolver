@@ -19,4 +19,6 @@ int main() {
 	} else {
 		std::cout << "No Solution Found." << std::endl;
 	}
+	//Node *n = new Node();
+	//n->getLeft();
 }	

@@ -27,13 +27,15 @@ const int MULT_9 = 9; //multipler constant
 
 //Representation of the Exact Cover matrix.
 class Matrix_ExactCover {
+	friend class SolutionSet;
 private:
 	Node_Constraint *head;
 	std::vector<Node_Constraint *> header_constraint; //length NUMCOLS
-
+	Matrix_ExactCover();//contructor default
+	void m_create_cells();
 public:
 	//Operations
-	Matrix_ExactCover(): head(nullptr), header_constraint(NUMCOLS) {}//contructor default
+	
 	void printRowByRow();
 
 	//Getters
@@ -44,6 +46,7 @@ public:
 	//Setters
 	void set_Column_Constraint(int col, Node_Constraint *n);
 	void setHead(Node_Constraint *n);
+
 
 };
 
