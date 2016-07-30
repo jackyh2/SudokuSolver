@@ -3,6 +3,22 @@
 
 #include "DLX.h"
 
+std::stack<Node *> SolutionSet::getSolRows() { return solRows; }
+Matrix_ExactCover* SolutionSet::getECM() { return m; }
+bool SolutionSet::getSolved() { return solved; }
+int SolutionSet::getSolnNum() { return solutionNum; }
+
+void SolutionSet::setStack(std::stack<Node *> s) { solRows = s; }
+void SolutionSet::pushStack(Node *n) { solRows.push(n); }
+Node* SolutionSet::popStack() { 
+	Node *tmp = solRows.top();
+	solRows.pop();
+	return tmp;
+}
+void SolutionSet::setSolved(bool b) { solved = b; }
+void SolutionSet::setSolnNum(int n) { solutionNum = n; }
+void SolutionSet::setECM(Matrix_ExactCover *ecm){ m = ecm; }
+
 /*
  *Add a chosen ec_row to the solution set.
  *As per Algo X, all other rows that satisfy contraints satisfied by the chosen row are covered
@@ -12,23 +28,23 @@ void SolutionSet::insertNewRow(Node *n) {
 	Node *rowCurr, *colCurr, *remCurr;//removeCurr
 	rowCurr = n;
 	do { //for the entire row at n, at each column of these nodes:
-		for (colCurr = rowCurr->up; colCurr != rowCurr; colCurr = colCurr->up) {//for whole col, non-inclusive of n
+		for (colCurr = rowCurr->getUp(); colCurr != rowCurr; colCurr = colCurr->getUp()) {//for whole col, non-inclusive of n
 			//for the entire row, non-inclusive of starting node
-			for (remCurr = colCurr->right; remCurr != colCurr; remCurr = remCurr->right) {
+			for (remCurr = colCurr->getRight(); remCurr != colCurr; remCurr = remCurr->getRight()) {
 				remCurr->removeUpDown(); //cover vertical links
-				Node_Constraint *tmp = m->get_Column_Constraint(remCurr->colVal);
-				tmp->size--; //a row has been removed
+				Node_Constraint *tmp = m->get_Column_Constraint(remCurr->getCol());
+				tmp->updateSize(-1); //a row has been removed
 				//adjust the constraint head
-				if (tmp->head == remCurr) tmp->head = remCurr->down;
-				if (tmp->head == remCurr) tmp->head = nullptr;
+				if (tmp->getHead() == remCurr) tmp->setHead(remCurr->getDown());
+				if (tmp->getHead() == remCurr) tmp->setHead(nullptr);
 			}
 		}
-		Node_Constraint *currConstraint = m->get_Column_Constraint(rowCurr->colVal);
+		Node_Constraint *currConstraint = m->get_Column_Constraint(rowCurr->getCol());
 		currConstraint->removeLeftRight(); //hide the satisfied constraints
-		if (m->head == currConstraint) m->head = currConstraint->right;
-		if (m->head == currConstraint) m->head = nullptr;
+		if (m->getHead() == currConstraint) m->setHead(currConstraint->getRight());
+		if (m->getHead() == currConstraint) m->setHead(nullptr);
 
-		rowCurr = rowCurr->right;
+		rowCurr = rowCurr->getRight();
 	} while (rowCurr != n);
 }
 
@@ -43,20 +59,20 @@ Node *SolutionSet::restorePrevRow() {
 	Node *rowCurr, *colCurr, *remCurr;
 	rowCurr = n;
 	do {
-		for (colCurr = rowCurr->down; colCurr != rowCurr; colCurr = colCurr->down) {
-			for (remCurr = colCurr->left; remCurr != colCurr; remCurr = remCurr->left) {
+		for (colCurr = rowCurr->getDown(); colCurr != rowCurr; colCurr = colCurr->getDown()) {
+			for (remCurr = colCurr->getLeft(); remCurr != colCurr; remCurr = remCurr->getLeft()) {
 				remCurr->restoreUpDown();
-				Node_Constraint *tmp = m->get_Column_Constraint(remCurr->colVal);
-				tmp->size++;
-				if (tmp->head == nullptr) tmp->head = remCurr;//no longer empty column
+				Node_Constraint *tmp = m->get_Column_Constraint(remCurr->getCol());
+				tmp->updateSize(1);
+				if (tmp->getHead() == nullptr) tmp->setHead(remCurr);//no longer empty column
 			}
 		}
-		Node_Constraint *currConstraint = m->get_Column_Constraint(rowCurr->colVal);
+		Node_Constraint *currConstraint = m->get_Column_Constraint(rowCurr->getCol());
 		currConstraint->restoreLeftRight(); //restore a hidden constraint
-		if (m->head == nullptr) m->head = currConstraint;
-		if (currConstraint->colVal < m->head->colVal) m->head = currConstraint;//m->head points to lowest constraint
+		if (m->getHead() == nullptr) m->setHead(currConstraint);
+		if (currConstraint->getCol() < m->getHead()->getCol()) m->setHead(currConstraint);//m->head points to lowest constraint
 
-		rowCurr = rowCurr->left;
+		rowCurr = rowCurr->getLeft();
 	} while (rowCurr != n);
 
 	return n;
@@ -67,7 +83,7 @@ Node *SolutionSet::restorePrevRow() {
  *bool solved can be used to print one or multiple solutions.
  */
 void SolutionSet::solve() {
-	if (m->head == nullptr) { //we are done.
+	if (m->getHead() == nullptr) { //we are done.
 		solved = true; //early return after first solution printed
 		//Print without altering stack if multiple solutions desired
 		std::stack<Node *> tmp = solRows;
@@ -78,23 +94,23 @@ void SolutionSet::solve() {
 		return;
 	} else {
 		if (solved == true) return; //optional statement for faster completion
-		int size = m->head->size; //Pick via S heuristic.
-		Node_Constraint *min = m->head;
-		Node_Constraint *curr = m->head->right;
-		while (curr != m->head) {
-			if (curr->size < size) {
-				size = curr->size;
+		int size = m->getHead()->getSize(); //Pick via S heuristic.
+		Node_Constraint *min = m->getHead();
+		Node_Constraint *curr = m->getHead()->getRight();
+		while (curr != m->getHead()) {
+			if (curr->getSize() < size) {
+				size = curr->getSize();
 				min = curr;
 			}
-			curr = curr->right;
+			curr = curr->getRight();
 		} //found the column with least rows
 
 		//no rows in this column
-		if (min->head == nullptr) {
+		if (min->getHead() == nullptr) {
 			return;//backtrack and pick another row
 		} 
 
-		Node *row = min->head;
+		Node *row = min->getHead();
 		do { //for every row in the unsatisfied constraint
 			if (solved == true) return;//early return for first solution
 			insertNewRow(row);
@@ -104,8 +120,8 @@ void SolutionSet::solve() {
 			if (solved == true) return;
 			restorePrevRow();
 
-			row = row->down;
-		} while (row != min->head);
+			row = row->getDown();
+		} while (row != min->getHead());
 	}
 }
 
@@ -158,9 +174,9 @@ void SolutionSet::printSolution() {
 		Node *currRow = solRows.top();
 		solRows.pop();
 
-		symbol = ((currRow->rowVal - 1) % 9) + 1;
-		row = (currRow->rowVal - 1)/ 81;
-		col = ((currRow->rowVal - 1)/ 9) % 9;
+		symbol = ((currRow->getRow() - 1) % 9) + 1;
+		row = (currRow->getRow() - 1)/ 81;
+		col = ((currRow->getRow() - 1)/ 9) % 9;
 		Sudoku[row][col] = symbol;
 	}
 

@@ -7,6 +7,18 @@
 
 
 static void m_create_cells(Matrix_ExactCover *m);
+
+Node_Constraint* Matrix_ExactCover::getHead() { return head; }
+void Matrix_ExactCover::set_Column_Constraint(int col, Node_Constraint * n) { header_constraint[col] = n; }
+void Matrix_ExactCover::setHead(Node_Constraint *n) { head = n; }
+/*
+ *Return pointer to a specified contraint node
+ */
+Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
+	return header_constraint[col];
+}
+
+
 //Following the rows and columns layout in
 //http://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
 
@@ -28,16 +40,24 @@ Matrix_ExactCover *m_create_grid() {
 
 	for (int i = 0; i < NUMCOLS; ++i) {
 		curr = new Node_Constraint(i);
-		m->header_constraint[i] = curr;
+		m->set_Column_Constraint(i, curr);
 		if (prev == nullptr) prev = curr;
-		curr->left = prev;
-		prev->right = curr;
+		curr->setLeft(prev);
+		prev->setRight(curr);
 		prev = curr;
+
+		/*curr->left = prev;
+		prev->right = curr;
+		prev = curr;*/
 	}
-	m->head = m->header_constraint[0];
+	m->setHead(m->get_Column_Constraint(0));
+	/*m->head = m->header_constraint[0];*/
 	//Circular LL of contraints
-	curr->right = m->head;
-	m->head->left = curr;
+	curr->setRight(m->getHead());
+	m->getHead()->setLeft(curr);
+
+	/*curr->right = m->head;
+	m->head->left = curr;*/
 
 	m_create_cells(m);
 	return m;
@@ -64,7 +84,7 @@ static void m_create_cells(Matrix_ExactCover *m) {
 				prev = nullptr;
 				for (int n = 0; n < NUM_CONDS; ++n) {
 					cell = new Node(ec_row, ec_cond[n]);
-					col_Constraint = m->header_constraint[cell->colVal];
+					col_Constraint = m->get_Column_Constraint(cell->getCol());
 					col_Constraint->insertNewNode(cell);
 					if (prev != nullptr) { //wait till one node already exists in row
 						prev->linkWithRow(cell);
@@ -76,22 +96,18 @@ static void m_create_cells(Matrix_ExactCover *m) {
 	}
 }
 
-/*
- *Return pointer to a specified contraint node
- */
-Node_Constraint *Matrix_ExactCover::get_Column_Constraint(int col) {
-	return header_constraint[col];
-}
+
 
 /*
  *Return the pointer to the specified node
  */
 Node *Matrix_ExactCover::get_Node(int row, int col) {
-	Node *cell = header_constraint[col]->head;
+	Node *cell = header_constraint[col]->getHead();
+	/*Node *cell = header_constraint[col]->head;*/
 	do {
-		if (cell->rowVal == row) return cell;
-		cell = cell->down;
-	} while (cell != header_constraint[col]->head);
+		if (cell->getRow() == row) return cell;
+		cell = cell->getDown();
+	} while (cell != header_constraint[col]->getHead());
 	return nullptr;
 }
 
@@ -104,26 +120,27 @@ void Matrix_ExactCover::printRowByRow() {
 	Node *currNode;
 	do {
 		if (head == nullptr) break;//empty ECM
-		currCol = get_Column_Constraint(iter->colVal);//for each column
-		currNode = currCol->head; 
+		currCol = get_Column_Constraint(iter->getCol());//for each column
+		currNode = currCol->getHead(); 
 		if (currNode == nullptr) {//empty column
-			iter = iter->right;
+			iter = iter->getRight();
 			continue;
 		}
 		do { //for each node in a column
-			int row = currNode->rowVal;
+			int row = currNode->getRow();
 			matrix[row - 1].push_back(currNode);//push to appropriate row vector (row [1,729])
-			currNode = currNode->down;
-		} while (currNode != currCol->head);
-		iter = iter->right;
+			currNode = currNode->getDown();
+		} while (currNode != currCol->getHead());
+		iter = iter->getRight();
 	} while (iter != head);
 
 	for (int i = 0; i < NUMROWS; ++i) {
 		std::cout << "G: " << (i+1)/9 + 1 << " | R: " << i+1 << "  ";
 		for (auto it = matrix[i].begin(); it != matrix[i].end(); ++it) {
-			std::cout << "(" << (*it)->rowVal << "," << (*it)->colVal << ") ";
+			std::cout << "(" << (*it)->getRow() << "," << (*it)->getCol() << ") ";
 		}
 		std::cout << std::endl;
 	}
 
 }
+
