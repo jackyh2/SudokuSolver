@@ -1,12 +1,7 @@
 # SudokuSolver
-Implements Dancing Links algorithm to solve Sudoku.
-
-If 'n' is the dimension of a single box, the exact cover matrix has
-Rows = n^2 symbols into (n^2 * n^2) boxes
-	 = n^6
-Columns/constraints
-	 = n^2 symbols in n^2 rows
-	 + n^2 symbols in n^2 columns
-	 + n^2 symbols in n^2 boxes
-	 + n^2 * n^2 boxes to fill
-	 = 4n^4
+## Description
+* Implements Knuth's Dancing Links and Algorithm X to solve Sudoku for all solutions.
+* Input on STDIN 81 space-seperated numbers [0-9] with 0 signifying an empty sudoku cell.
+* SudokuSolver will output all possible solutions to the input puzzle.
+	* Comment out `solved = true;` in `solve()` of `DLX.cpp` to do so as it currently prints a single solution.
+	* TODO: Implement command line arguments for the user to specify output format.
